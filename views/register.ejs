@@ -1,0 +1,28 @@
+<% include ./partials/header %>
+<div class="col-md-3">
+    <h1>Sign Up</h1>
+    <div class="form-group">
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <input class="form-control" type="text" name="firstName" placeholder="first name">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="lastName" placeholder="last name">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="email" placeholder="email">
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="username" placeholder="username">
+                </div>
+                <input class="form-control" type="password" name="password" placeholder="password">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="avatar" placeholder="avatar url">
+            </div>
+            <button class="form-group">Sign Up!</button>
+        </form>
+    </div>
+</div>
+<% include ./partials/footer%>
