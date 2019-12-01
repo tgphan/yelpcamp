@@ -1,5 +1,10 @@
 var middlewareObj = {};
 
+middlewareObj.backURL = function (req, res, next) {
+    req.session.returnTo = req.originalUrl;
+    return next();
+}
+
 middlewareObj.isCommentCreator = function (req, res, next) {
     if (req.isAuthenticated()) {
         Campground.findById(req.params.id, (err, campground) => {
@@ -40,8 +45,8 @@ middlewareObj.isCampgroundCreator = function (req, res, next) {
             if (error || !campground) {
                 req.flash('error', "Campground not found!");
                 res.redirect('back');
-            } else if(campground.author.id.equals(req.user._id) || req.user.isAdmin){
-                return next() ;
+            } else if (campground.author.id.equals(req.user._id) || req.user.isAdmin) {
+                return next();
             } else {
                 res.redirect('/login');
             }
