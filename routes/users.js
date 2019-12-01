@@ -10,11 +10,10 @@ router.get('/:username', (req, res) =>{
     console.log(req.params);
     User.findOne({'username': req.params.username}, (err, user) => {
         console.log(user);
-        if(err){
-            req.flash('error', err.message);
+        if(err || !user){
+            req.flash('error', "Sorry, that user doesn't exist!");
             res.redirect('back');
         } else if (user) {
-            
             res.render('users/show', {user: user} );
         }
     });
