@@ -16,7 +16,8 @@ const express = require('express'),
 
 const commentRoutes = require('./routes/comments'),
             campgroundRoutes = require('./routes/campgrounds'),
-            indexRoutes = require('./routes/index');
+            indexRoutes = require('./routes/index'),
+            userRoutes = require('./routes/users');
 
 
 app.locals.moment  = require('moment');
@@ -60,6 +61,8 @@ app.use(expressSanitizer());
 app.use(indexRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
 app.use('/campgrounds', campgroundRoutes);
+app.use('/users/', userRoutes);
+
 //PORT - port for server and lets dev knows it's up and running
 app.listen(3000, () => {
     console.log('Yelp Camp started on port 3g');
