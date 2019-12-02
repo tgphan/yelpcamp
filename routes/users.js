@@ -5,6 +5,15 @@ const express = require('express'),
     User = require('../models/user'),
     middleware = require('../middleware');
 
+// redirects to user page of current user or login page if username is specified
+router.get('/', (req, res) => {
+    if (req.user) {
+        res.redirect(`/users/${req.user.username}`);
+    } else {
+        res.redirect('/login');
+    }
+});
+
 // shows user page
 router.get('/:username', (req, res) => {
     User.findOne({ 'username': req.params.username }, (err, user) => {
