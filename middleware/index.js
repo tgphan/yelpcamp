@@ -1,10 +1,5 @@
 var middlewareObj = {};
 
-middlewareObj.backURL = function (req, res, next) {
-    req.session.returnTo = req.originalUrl;
-    return next();
-}
-
 middlewareObj.isCommentCreator = function (req, res, next) {
     if (req.isAuthenticated()) {
         Campground.findById(req.params.id, (err, campground) => {
