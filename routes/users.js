@@ -24,14 +24,17 @@ router.get('/:username', (req, res) => {
             delete req.session.returnTo;
         } else if (user) {
             req.session.returnTo = req.originalUrl;
-            var accountInfo = {
-                user: user
-            };
+
             Campground.find().where('author.id').equals(user._id).exec((err, campgrounds) => {
-                if (campgrounds) {
-                    accountInfo.campgrounds = campgrounds;
-                }
-                res.render('users/show', accountInfo);
+
+                Comment.find().where('author.id').equals(user._id).exec((err, comments) => {
+                    
+                    res.render('users/show', {
+                        user: user,
+                        campgrounds: campgrounds,
+                        comments: comments
+                    });
+                });
             });
         }
     });
