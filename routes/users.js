@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
     if (req.user) {
         res.redirect(`/users/${req.user.username}`);
     } else {
+        req.flash('success', 'Please sign in to see your account!');
         res.redirect('/login');
     }
 });
@@ -23,7 +24,15 @@ router.get('/:username', (req, res) => {
             delete req.session.returnTo;
         } else if (user) {
             req.session.returnTo = req.originalUrl;
-            res.render('users/show', { user: user });
+            var accountInfo = {
+                user: user
+            };
+            Campground.find().where('author.id').equals(user._id).exec((err, campgrounds) => {
+                if (campgrounds) {
+                    accountInfo.campgrounds = campgrounds;
+                }
+                res.render('users/show', accountInfo);
+            });
         }
     });
 });

@@ -1,33 +1,63 @@
 <% include ../partials/header %>
-
-<div class="ui card">
-    <div class="image">
-        <div class="ui dimmer">
-            <div class="content">
-                <div class="center">
-                    <div class="ui inverted button">Add Friend</div>
+<div class="four wide column">
+    <div class="ui card">
+        <div class="image">
+            <div class="ui dimmer">
+                <div class="content">
+                    <div class="center">
+                        <div class="ui inverted button">Add Friend</div>
+                    </div>
                 </div>
             </div>
+            <img src="<%= user.avatar %>">
         </div>
-        <img src="<%= user.avatar %>">
-    </div>
-    <div class="content">
-        <div class="header"><%= user.username %></div>
-        <div class="meta">
-            <a class="group">
-                <% if (user.isAdmin) { %>
-                admin
-                <% } else {%>
-                happy camper
-                <% } %>
-            </a>
+        <div class="content">
+            <div class="header"><%= user.username %></div>
+            <div class="meta">
+                <a class="group">
+                    <% if (user.isAdmin) { %>
+                    admin
+                    <% } else {%>
+                    happy camper
+                    <% } %>
+                </a>
+            </div>
+            <div class="description">One or two sentence description that may go to several lines</div>
         </div>
-        <div class="description">One or two sentence description that may go to several lines</div>
+        <div class="extra content">
+            <a class="right floated created">Arbitrary</a>
+            <a class="friends">
+                Arbitrary</a>
+        </div>
     </div>
-    <div class="extra content">
-        <a class="right floated created">Arbitrary</a>
-        <a class="friends">
-            Arbitrary</a>
+</div>
+
+<div class="twelve wide column">
+    <div class='ui four stackable cards'>
+        <% for (const campground of campgrounds) {%>
+        <a href="/campgrounds/<%= campground._id %>">
+            <div class="ui raised link card">
+                <div class="image">
+                    <img class="ui image" src="<%= campground.image %>">
+
+                </div>
+                <div class="content">
+                    <div class="header"><%= campground.name %></div>
+                    <div class="meta">
+                        $<%= campground.price %>/night
+                    </div>
+                    <div class="description">
+                        <%= campground.description %>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <span class="right floated">
+                        <%= campground.location %>
+                    </span>
+                </div>
+            </div>
+        </a>
+        <% } %>
     </div>
 </div>
 
