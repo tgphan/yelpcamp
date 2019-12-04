@@ -25,10 +25,12 @@ router.get('/:username', (req, res) => {
         } else if (user) {
             req.session.returnTo = req.originalUrl;
 
-            Campground.find().where('author.id').equals(user._id).exec((err, campgrounds) => {
+            Campground.find().where('author.id').equals(user._id)
+            .exec((err, campgrounds) => {
 
-                Comment.find().where('author.id').equals(user._id).exec((err, comments) => {
-                    
+                Comment.find().where('author.id').equals(user._id)
+                .populate('campground').exec((err, comments) => {
+
                     res.render('users/show', {
                         user: user,
                         campgrounds: campgrounds,

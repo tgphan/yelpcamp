@@ -24,12 +24,15 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
             let comment = await Comment.create(req.body.comment);
             comment.author.id = req.user._id;
             comment.author.username = req.user.username;
+            comment.campground = campground;
+            console.log(comment.campground.image);
             comment.save();
             campground.comments.push(comment);
             campground.save();
             req.flash('success', 'Successfully added comment!');
             res.redirect(`/campgrounds/${req.params.id}`);
         } catch(error) {
+            console.log(error);
             res.redirect('/campgrounds');
         }
     }());

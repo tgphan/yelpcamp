@@ -7,11 +7,16 @@ var commentSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         },
-        createdAt: {
-            type: Date, 
-            default: Date.now},
         username: String
-    }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    campground: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Campground"
+        }
 });
 
 module.exports = mongoose.model('Comment', commentSchema);

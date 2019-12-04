@@ -33,9 +33,14 @@
 </div>
 
 <div class="twelve wide column">
-    <div class="twelve column row">
-        <div class='ui four stackable cards'>
-            <% if (campgrounds) { %>
+    <div class="ui twelve column grid">
+
+        <div class="row">
+            <h2 class="ui  header ">Campgrounds</h2>
+        </div>
+        <div class="row">
+            <div class='ui four stackable cards'>
+                <% if (campgrounds) { %>
                 <% for (const campground of campgrounds) {%>
                 <a href="/campgrounds/<%= campground._id %>">
                     <div class="ui raised link card">
@@ -59,16 +64,37 @@
                     </div>
                 </a>
                 <% } %>
-            
+                <% } %>
+            </div>
+        </div>
+
+        <div class="row">
+            <% if (comments ) { %>
+            <div class="ui comments">
+                <h3 class="ui dividing header">Comments</h3>
+                <% for (const comment of comments) { %>
+                <div class="comment">
+                    <a class="avatar">
+                        <img src="<%= comment.campground.image %>">
+                    </a>
+                    <div class="content">
+                        <a class="author">
+                            <%= comment.campground.name %>
+                        </a>
+                        <div class="metadata">
+                            <span class="date">
+                                <%= comment.createdAt %>
+                            </span>
+                        </div>
+                        <div class="text">
+                            <%= comment.text %>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+            </div>
             <% } %>
         </div>
-    </div>
-    <div class="twelve column row">
-        <% if (comments ) { %>
-            <% for (const comment of comments) { %>
-                <p><%= comment.text %></p>
-            <% } %>          
-        <% } %>
     </div>
 </div>
 
