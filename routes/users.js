@@ -17,29 +17,53 @@ router.get('/', (req, res) => {
 
 // shows user page
 router.get('/:username', (req, res) => {
-    User.findOne({ 'username': req.params.username }, (err, user) => {
-        if (err || !user) {
-            req.flash('error', "Sorry, that user doesn't exist!");
-            res.redirect(req.session.returnTo || '/campgrounds');
-            delete req.session.returnTo;
-        } else if (user) {
-            req.session.returnTo = req.originalUrl;
+    User.findOne({ 'username': req.params.username }).
+        populate('campgrounds').
+        populate({
+            path: 'comments',
+            populate: { path: 'campground' }
+        }).
+        exec((err, user) => {
+            if (err || !user) {
+                req.flash('error', "Sorry, that user doesn't exist!");
+                res.redirect(req.session.returnTo || '/campgrounds');
+                delete req.session.returnTo;
+            } else if (user) {
+                req.session.returnTo = req.originalUrl;
 
-            Campground.find().where('author.id').equals(user._id)
-            .exec((err, campgrounds) => {
-
-                Comment.find().where('author.id').equals(user._id)
-                .populate('campground').exec((err, comments) => {
-
-                    res.render('users/show', {
-                        user: user,
-                        campgrounds: campgrounds,
-                        comments: comments
+                //make a new array with a comment array inside campground objects
+                var campgroundArray = [];
+                for (const comment of user.comments) {
+                    campgroundArray.push({
+                        id: comment.campground._id,
+                        image: comment.campground.image,
+                        name: comment.campground.name,
+                        comments: []
                     });
-                });
-            });
-        }
-    });
+                }
+
+                //filter the campgroundArray to remove duplicate campgrounds
+                campgroundArray = campgroundArray.filter((campground, index, self) =>
+                    index === self.findIndex((t) => (
+                        t.id.equals(campground.id)
+                    ))
+                )
+
+                //iterate through user.comments and compare campgrounds with campgroundArray
+                for (const campground of campgroundArray) {
+                    for (const comment of user.comments) {
+                        //push comments from matching campgrounds in user.comments into campgroundArray
+                        if (comment.campground._id.equals(campground.id)) {
+                            campground.comments.push({
+                                text: comment.text,
+                                createdAt: comment.createdAt
+                            });
+                        }
+                    }
+                }
+                res.render('users/show', { user: user, sortedComments: campgroundArray });
+            }
+        });
 });
 
 module.exports = router;

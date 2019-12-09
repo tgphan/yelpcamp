@@ -21,18 +21,19 @@ const commentRoutes = require('./routes/comments'),
 
 
 app.locals.moment  = require('moment');
-// PASSPORT CONFIGURATION
 app.use(require('express-session')({
     secret: '108108108',
     resave: false,
     saveUninitialized: false
 }));
 app.use(flash());
+
+// passport configuration
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy((User.authenticate())));
 passport.serializeUser((User.serializeUser()));
 passport.deserializeUser(User.deserializeUser());
+passport.use(new LocalStrategy(User.authenticate()));
 
 //BUILD CONNECTION - between mongoose and mongodb
 mongoose.connect('mongodb://localhost:27017/yelp_camp',

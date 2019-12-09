@@ -12,7 +12,19 @@ var UserSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    }
+    },
+    campgrounds: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Campground"
+        }
+    ],
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ]
 });
 
 UserSchema.plugin(passportLocalMongoose);

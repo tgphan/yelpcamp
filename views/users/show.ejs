@@ -34,14 +34,16 @@
 
 <div class="twelve wide column">
     <div class="ui twelve column grid">
-
         <div class="row">
+            <% if (user.campgrounds.length == 0) { %>
+            <h4 class="ui header">No campgrounds</h4>
+            <% } else { %>
             <h2 class="ui  header ">Campgrounds</h2>
         </div>
         <div class="row">
             <div class='ui four stackable cards'>
-                <% if (campgrounds) { %>
-                <% for (const campground of campgrounds) {%>
+
+                <% for (const campground of user.campgrounds) {%>
                 <a href="/campgrounds/<%= campground._id %>">
                     <div class="ui raised link card">
                         <div class="image">
@@ -64,23 +66,29 @@
                     </div>
                 </a>
                 <% } %>
-                <% } %>
             </div>
+            <% } %>
         </div>
 
         <div class="row">
-            <% if (comments ) { %>
             <div class="ui comments">
+                <% if (user.comments.length == 0 ) { %>
+                <h4 class="ui header">No comments</h4>
+                <% } else { %>
                 <h3 class="ui dividing header">Comments</h3>
-                <% for (const comment of comments) { %>
+                
+                <% for (const campground of sortedComments) { %>
                 <div class="comment">
                     <a class="avatar">
-                        <img src="<%= comment.campground.image %>">
+                        <img src="<%= campground.image %>">
                     </a>
                     <div class="content">
                         <a class="author">
-                            <%= comment.campground.name %>
+                            <%= campground.name %>
                         </a>
+                    </div>
+                    <% for (const comment of campground.comments) { %>
+                    <div class="content">
                         <div class="metadata">
                             <span class="date">
                                 <%= comment.createdAt %>
@@ -89,11 +97,12 @@
                         <div class="text">
                             <%= comment.text %>
                         </div>
+                        <% } %>
                     </div>
                 </div>
                 <% } %>
+                <% } %>
             </div>
-            <% } %>
         </div>
     </div>
 </div>

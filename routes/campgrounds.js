@@ -47,33 +47,40 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
             lng = data[0].longitude,
             location = data[0].formattedAddress;
 
-        Campground.create(
-            {
-                name: name,
-                price: price,
-                image: image,
-                description: description,
-                lat: lat,
-                lng: lng,
-                location: location,
-                author: {
-                    id: req.user._id,
-                    username: req.user.username
-                }
-            }, (err, campground) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.redirect('/campgrounds');
-                }
+
+            User.findById(req.user._id, (err, user) => {
+                Campground.create(
+                    {
+                        name: name,
+                        price: price,
+                        image: image,
+                        description: description,
+                        lat: lat,
+                        lng: lng,
+                        location: location,
+                        author: user
+                    }, (err, campground) => {
+                        if (err) {
+                            console.log(err);
+                            res.redirect('/campgrounds');
+                        } else {
+                            user.campgrounds.push(campground);
+                            user.save();
+                            res.redirect('/campgrounds');
+        
+                        }
+                    });
+                
             });
+
     });
 });
 
 
 //SHOW - shows more info about one campground
 router.get('/:id', (req, res) => {
-    Campground.findById(req.params.id).populate('comments').exec((err, campground) => {
+    Campground.findById(req.params.id).populate('author')
+    .populate('comments').exec((err, campground) => {
         if (err || !campground) {
             console.log(err);
             req.flash('error', 'Campground not found');

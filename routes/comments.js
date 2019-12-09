@@ -2,6 +2,7 @@ var express = require('express');
     router = express.Router({ mergeParams: true }),
     Campground = require('../models/campground'),
     Comment = require('../models/comment'),
+    User = require("../models/user");
     bodyParser = require('body-parser'),
     expressSanitizer = require('express-sanitizer'),
     middleware = require('../middleware');
@@ -20,15 +21,18 @@ router.get('/new', middleware.isLoggedIn, (req, res) => {
 router.post('/', middleware.isLoggedIn, (req, res) => {
     (async function addComment() {
         try {
+            let user = await User.findById(req.user._id);
             let campground = await Campground.findById(req.params.id);
             let comment = await Comment.create(req.body.comment);
-            comment.author.id = req.user._id;
-            comment.author.username = req.user.username;
+            // comment.author.id = req.user._id;
+            // comment.author.username = req.user.username;
+            comment.author = user;
             comment.campground = campground;
-            console.log(comment.campground.image);
             comment.save();
             campground.comments.push(comment);
             campground.save();
+            user.comments.push(comment);
+            user.save();
             req.flash('success', 'Successfully added comment!');
             res.redirect(`/campgrounds/${req.params.id}`);
         } catch(error) {
