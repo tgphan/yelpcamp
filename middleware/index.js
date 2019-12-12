@@ -34,6 +34,15 @@ middlewareObj.isLoggedIn = function (req, res, next) {
     res.redirect('/login');
 }
 
+middlewareObj.isUser = (req, res, next) => {
+    if (req.user && req.user.username === req.params.username) {
+        return next();
+    }
+    req.flash("You don't have permission to do that!")
+    res.redirect(req.session.returnTo || '/campgrounds');
+    delete req.session.returnTo;
+}
+
 middlewareObj.isCampgroundCreator = function (req, res, next) {
     if (req.isAuthenticated()) {
         Campground.findById(req.params.id, (error, campground) => {

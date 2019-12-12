@@ -10,7 +10,33 @@
     padding: 9px;
 }
 
-.hidden {
+/* user/show : campground display */
+div.ui.stackable.cards.grid a {
+    height: 350px;
+}
+
+div.ui.raised.link.card {
+    height: 325px;
+}
+
+div.ui.raised.link.card div.header {
+    display: inline;
+}
+
+div.ui.raised.link.card div.image {
+    max-width: 300px;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+div.ui.raised.link.card img.ui.image {
+    max-width: 300px;
+    max-height: 200px;
+    object-fit: cover;
+}
+
+
+.invisible {
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s 2s, opacity 2s linear;

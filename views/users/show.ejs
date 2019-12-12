@@ -1,5 +1,5 @@
 <% include ../partials/header %>
-<div class="four wide column">
+<!-- <div class="four wide column">
     <div class="ui card">
         <div class="image">
             <div class="ui dimmer">
@@ -30,10 +30,25 @@
                 Arbitrary</a>
         </div>
     </div>
+</div> -->
+
+
+<div class="ui segment left floated">
+    <img class="ui small image" src="<%= user.avatar %>">
+    <div class="image"></div>
+    <div class="header"><%= user.username %></div>
+    <div class="meta">
+        <a class="group">
+            <% if (user.isAdmin) { %>
+            admin
+            <% } else {%>
+            happy camper
+            <% } %>
+        </a>
+    </div>
 </div>
 
-<div class="twelve wide column">
-    <div class="ui twelve column grid">
+<div class="ui grid container">
         <div class="row">
             <% if (user.campgrounds.length == 0) { %>
             <h4 class="ui header">No campgrounds</h4>
@@ -41,16 +56,19 @@
             <h2 class="ui  header ">Campgrounds</h2>
         </div>
         <div class="row">
-            <div class='ui four stackable cards'>
-
-                <% for (const campground of user.campgrounds) {%>
+            <div class="ui stackable cards grid">
+                <% for (const campground of user.campgrounds) { %>
                 <a href="/campgrounds/<%= campground._id %>">
                     <div class="ui raised link card">
                         <div class="image">
                             <img class="ui image" src="<%= campground.image %>">
                         </div>
                         <div class="content">
-                            <div class="header"><%= campground.name %></div>
+                            <div class="header "><%= campground.name %>
+                            </div>
+                                <span class="meta right floated">
+                                        <%= campground.location %>
+                                    </span>
                             <div class="meta">
                                 $<%= campground.price %>/night
                             </div>
@@ -58,53 +76,47 @@
                                 <%= campground.description %>
                             </div>
                         </div>
-                        <div class="extra content">
-                            <span class="right floated">
-                                <%= campground.location %>
-                            </span>
-                        </div>
                     </div>
                 </a>
                 <% } %>
             </div>
+        </div>
+        <% } %>
+</div>
+
+    <div class="ui grid container">
+        <div class="ui comments">
+            <% if (user.comments.length == 0 ) { %>
+            <h4 class="ui header">No comments</h4>
+            <% } else { %>
+            <h3 class="ui dividing header">Comments</h3>
+            <% for (const campground of sortedComments) { %>
+            <div class="comment">
+                <a class="avatar">
+                    <img src="<%= campground.image %>">
+                </a>
+                <div class="content">
+                    <a class="author" href='/campgrounds/<%= campground.id %>'>
+                        <%= campground.name %>
+                    </a>
+                </div>
+                <% for (const comment of campground.comments) { %>
+                <div class="content">
+                    <div class="metadata">
+                        <span class="date">
+                            <%= comment.createdAt %>
+                        </span>
+                    </div>
+                    <div class="text">
+                        <%= comment.text %>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+            <% } %>
             <% } %>
         </div>
-
-        <div class="row">
-            <div class="ui comments">
-                <% if (user.comments.length == 0 ) { %>
-                <h4 class="ui header">No comments</h4>
-                <% } else { %>
-                <h3 class="ui dividing header">Comments</h3>
-                
-                <% for (const campground of sortedComments) { %>
-                <div class="comment">
-                    <a class="avatar">
-                        <img src="<%= campground.image %>">
-                    </a>
-                    <div class="content">
-                        <a class="author">
-                            <%= campground.name %>
-                        </a>
-                    </div>
-                    <% for (const comment of campground.comments) { %>
-                    <div class="content">
-                        <div class="metadata">
-                            <span class="date">
-                                <%= comment.createdAt %>
-                            </span>
-                        </div>
-                        <div class="text">
-                            <%= comment.text %>
-                        </div>
-                        <% } %>
-                    </div>
-                </div>
-                <% } %>
-                <% } %>
-            </div>
-        </div>
     </div>
-</div>
+
 
 <% include ../partials/footer %>

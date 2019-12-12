@@ -48,7 +48,9 @@ mongoose.connect('mongodb://localhost:27017/yelp_camp',
 app.use(bodyParser.urlencoded({ extended: true }));
 //VIEW ENGINE - tells express to look in views folder for ejs templates when rendering
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + "/public"));
+app.use(express.static("public"));
+app.use(express.static("semantic"));
+//add semantic static here
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     res.locals.error = req.flash('error');

@@ -66,4 +66,33 @@ router.get('/:username', (req, res) => {
         });
 });
 
+// shows user edit page
+router.get('/:username/edit', middleware.isUser, (req, res) => {
+    User.findOne({'username': req.params.username}, (err, user) => {
+        if (err) {
+            req.flash('error', "Sorry, that user doesn't exist");
+            res.redirect(req.session.returnTo || '/campgrounds');
+            delete req.session.returnTo;
+        }
+        req.session.returnTo = req.originalUrl;
+        res.render('users/edit', {user: user});
+    });
+});
+
+// user update route
+router.put('/:username', (req, res) => {
+    updatedUser = req.body.user;
+    User.findOneAndUpdate({'username' : req.params.username}, 
+    updatedUser, (err, user) => {
+        if (err) {
+            req.flash('error', "Sorry, we couldn't update your info!");
+            res.redirect(req.session.returnTo || '/campgrounds');
+            delete req.session.returnTo;
+        }
+        req.flash('error', "Your information was successfully updated!");
+        res.redirect(req.session.returnTo || `/users/${req.params.username}`);
+        delete req.session.returnTo;
+    });
+});
+
 module.exports = router;
