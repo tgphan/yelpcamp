@@ -80,7 +80,7 @@ router.get('/:username/edit', middleware.isUser, (req, res) => {
 });
 
 // user update route
-router.put('/:username', (req, res) => {
+router.put('/:username', middleware.checkPassword, (req, res) => {
     updatedUser = req.body.user;
     User.findOneAndUpdate({'username' : req.params.username}, 
     updatedUser, (err, user) => {

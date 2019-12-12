@@ -10,9 +10,12 @@
         <label >Last Name</label>
         <input type="text" name="user[lastName]" value="<%= user.lastName %>">
     </div>
+    <div class="field">
+        <label >To apply changes, please enter your password</label>
+        <input type="password" name="password" value="<%= user.lastName %>">
     </div>
-    <button class="ui 
-    button" type="submit">Submit</button>
+    </div>
+    <button class="ui button" type="submit">Submit</button>
 </form>
 
 <% include ../partials/footer %>

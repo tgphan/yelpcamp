@@ -26,23 +26,6 @@ middlewareObj.isCommentCreator = function (req, res, next) {
     }
 }
 
-middlewareObj.isLoggedIn = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    req.flash('error', 'You need to be logged in to do that!');
-    res.redirect('/login');
-}
-
-middlewareObj.isUser = (req, res, next) => {
-    if (req.user && req.user.username === req.params.username) {
-        return next();
-    }
-    req.flash("You don't have permission to do that!")
-    res.redirect(req.session.returnTo || '/campgrounds');
-    delete req.session.returnTo;
-}
-
 middlewareObj.isCampgroundCreator = function (req, res, next) {
     if (req.isAuthenticated()) {
         Campground.findById(req.params.id, (error, campground) => {
@@ -59,6 +42,44 @@ middlewareObj.isCampgroundCreator = function (req, res, next) {
         req.flash('error', "You need to be logged in to do that!");
         res.redirect('/login');
     }
+}
+
+middlewareObj.isLoggedIn = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    req.flash('error', 'You need to be logged in to do that!');
+    res.redirect('/login');
+}
+
+middlewareObj.isUser = (req, res, next) => {
+    if (req.user && req.user.username === req.params.username) {
+        return next();
+    }
+    req.flash('error', "You don't have permission to do that!")
+    res.redirect(req.session.returnTo || '/campgrounds');
+    delete req.session.returnTo;
+}
+
+middlewareObj.checkPassword = (req, res, next) => {
+    User.findOne({'username': req.params.username}, (err, user) => {
+        if (err) {
+            req.flash('error', "Please login again!");
+            res.redirect('/login');
+        }
+        user.authenticate(req.body.password, (err, password, passwordErr) => {
+            if(passwordErr) {
+                req.flash('error', "Sorry, the password you entered is incorrect!");
+                res.redirect(req.session.returnTo || '/campgrounds');
+                delete req.session.returnTo;
+            } else if (err) {
+                req.flash('error', "Sorry, please login and try again!");
+                res.redirect('/login');
+            } else if (password) {
+                return next();
+            }
+        });        
+    });
 }
 
 module.exports = middlewareObj;
