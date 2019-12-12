@@ -1,52 +1,30 @@
 <% include ../partials/header %>
-<!-- <div class="four wide column">
-    <div class="ui card">
-        <div class="image">
-            <div class="ui dimmer">
-                <div class="content">
-                    <div class="center">
-                        <div class="ui inverted button">Add Friend</div>
+
+<div class="ui left aligned grid">
+    <div class="left floated three wide column">
+        <div class="ui segment">
+            <div class="image">
+                <img class="ui small image" src="<%= user.avatar %>">
+            </div>
+            <div class="right floated right algined content">
+                    <h3>
+                        <%= user.username %>
+                    </h3>
+                    <div class="meta">
+                        <% if (user.isAdmin) { %>
+                        admin
+                        <% } else {%>
+                        happy camper
+                        <% } %>
                     </div>
-                </div>
-            </div>
-            <img src="<%= user.avatar %>">
-        </div>
-        <div class="content">
-            <div class="header"><%= user.username %></div>
-            <div class="meta">
-                <a class="group">
-                    <% if (user.isAdmin) { %>
-                    admin
-                    <% } else {%>
-                    happy camper
+                    <% if (currentUser && currentUser._id.equals(user._id)) { %>
+                    <a href="/users/<%= user.username%>/edit">Edit profile</a>
                     <% } %>
-                </a>
-            </div>
-            <div class="description"><%= user.description %></div>
+                </div>
         </div>
-        <div class="extra content">
-            <a class="right floated created">Arbitrary</a>
-            <a class="friends">
-                Arbitrary</a>
-        </div>
-    </div>
-</div> -->
-
-
-<div class="ui segment left floated">
-    <img class="ui small image" src="<%= user.avatar %>">
-    <div class="image"></div>
-    <div class="header"><%= user.username %></div>
-    <div class="meta">
-        <a class="group">
-            <% if (user.isAdmin) { %>
-            admin
-            <% } else {%>
-            happy camper
-            <% } %>
-        </a>
     </div>
 </div>
+
 
 <div class="ui grid container">
         <div class="row">

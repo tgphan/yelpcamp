@@ -18,6 +18,7 @@
     "express-session": "^1.17.0",
     "graceful-fs": "^4.2.3",
     "locus": "^2.0.4",
+    "lodash.template": "^4.5.0",
     "method-override": "^3.0.0",
     "moment": "^2.24.0",
     "mongodb": "^3.3.4",
