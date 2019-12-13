@@ -89,7 +89,7 @@ router.put('/:username', middleware.checkPassword, (req, res) => {
             res.redirect(req.session.returnTo || '/campgrounds');
             delete req.session.returnTo;
         }
-        req.flash('error', "Your information was successfully updated!");
+        req.flash('success', "Your information was successfully updated!");
         res.redirect(req.session.returnTo || `/users/${req.params.username}`);
         delete req.session.returnTo;
     });
