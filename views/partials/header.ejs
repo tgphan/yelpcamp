@@ -4,6 +4,9 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/dist/semantic.min.css">
     <link rel="stylesheet" href="/stylesheets/main.css">
+
+    <script src="/lib/jquery-3.4.1.min.js"></script>
+    <script src="/dist/semantic.min.js" type="text/javascript"></script>
     <title>YelpCamp</title>
 </head>
 
@@ -28,18 +31,39 @@
                     Sign Up
                 </a>
                 <% } else { %>
+
+                <div class="ui item dropdown">
+                    Notifications
+                    <i class="dropdown icon">
+                        <%= newNotifications.length %>
+                    </i>
+                    <% if (newNotifications.length > 0) { %>
+                    <div class="menu">
+                        <% for (const notification of newNotifications) { %>
+                        <div class="item">
+                            <a href="/users/notifications/<%= notification._id %>">
+                                <%= notification.username %> created a new campground
+                            </a>
+                        </div>
+                        <% } %>
+                    </div>
+                    <% } %>
+                </div>
+
                 <a class="ui item" href="/logout">
                     Logout
                 </a>
                 <% } %>
             </div>
+            <script>$('.ui.item.dropdown').dropdown();</script>
         </div>
     </div>
 
     <div class="ui grid main container">
-        <% if(warning && warning.length > 0) { %>
+        <% if(error && error.length > 0) { %>
         <div class="row">
-            <div class="ui floating warning message six column wide" id="alert" role="alert">
+            <div class="ui floating error message six column wide" id="alert" role="alert">
+                <div class="header"><%= errorHeader %></div>
                 <%= error %>
             </div>
         </div>
@@ -47,14 +71,16 @@
         <% if(success && success.length > 0) { %>
         <div class="row">
             <div class="ui floating success message six column wide" id="alert" role="alert">
+                <div class="header"><%= successHeader %></div>
                 <%= success %>
             </div>
         </div>
         <% } %>
-        <% if(error && error.length > 0) { %>
+        <% if(warning && warning.length > 0) { %>
         <div class="row">
-            <div class="ui floating error message six column wide" id="alert" role="alert">
-                <%= success %>
+            <div class="ui floating warning message six column wide" id="alert" role="alert">
+                <div class="header"><%= warningHeader %></div>
+                <%= warning %>
             </div>
         </div>
         <% } %>

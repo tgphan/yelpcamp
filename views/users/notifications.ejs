@@ -1,0 +1,6 @@
+<% include ../partials/header %>
+<% for (const notification of notifications) { %>
+    <p><%= notification.user %> - <% notification.campground %></p>
+<% } %>
+
+<% include ../partials/footer %>

@@ -1,6 +1,7 @@
 const express = require('express'),
     router = express.Router(),
     Campground = require('../models/campground'),
+    Notification = require('../models/notifications'),
     expressSanitizer = require('express-sanitizer'),
     middleware = require('../middleware'),
     NodeGeocoder = require('node-geocoder'),
@@ -47,8 +48,7 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
             lng = data[0].longitude,
             location = data[0].formattedAddress;
 
-
-            User.findById(req.user._id, (err, user) => {
+            User.findById(req.user._id).populate('followers').exec((err, user) => {
                 Campground.create(
                     {
                         name: name,
@@ -66,6 +66,19 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
                         } else {
                             user.campgrounds.push(campground);
                             user.save();
+                            Notification.create({
+                                username: user.username,
+                                campground: campground._id,
+                            }, (err, notification) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                for (const follower of user.followers) {
+                                    follower.notifications.push(notification);
+                                    follower.save();
+                                }
+                            });
+
                             res.redirect('/campgrounds');
         
                         }

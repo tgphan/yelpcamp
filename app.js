@@ -10,6 +10,7 @@ const express = require('express'),
             Campground = require("./models/campground"),
             Comment = require('./models/comment'),
             User = require('./models/user'),
+            Notification = require('./models/notifications'),
             seedDB = require('./seeds'),
             methodOverride = require('method-override'),
             moment = require('moment');
@@ -51,10 +52,25 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(express.static("semantic"));
 //add semantic static here
-app.use((req, res, next) => {
+app.use(async function (req, res, next) {
     res.locals.currentUser = req.user;
+    if (req.user) {
+        try {
+            let user = await User.findOne({  'username' : req.user.username })
+            .populate('notifications', null, { isRead: false }).exec();
+            res.locals.newNotifications = user.notifications.reverse();
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
+    res.locals.errorHeader = req.flash('error header');
     res.locals.error = req.flash('error');
+    res.locals.successHeader = req.flash('success header');
     res.locals.success = req.flash('success');
+    res.locals.warningHeader = req.flash('warning header');
+    res.locals.warning = req.flash('warning');
+    res.locals.messageHeader = req.flash('message header');
+    res.locals.message = req.flash('message');
     next();
 });
 app.use(methodOverride('_method'));

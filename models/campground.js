@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
 
 //SCHEMA - schema for mongodb'campground' entries
-var campgroundSchema = new mongoose.Schema(
-    {
+var campgroundSchema = new mongoose.Schema({
     name: String,
     price: String,
     image: String,
@@ -22,8 +21,11 @@ var campgroundSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Comment"
         }
-    ]
-    }
-);
+    ],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }]
+});
 //MODEL - makes new model for mongoose so we can manipulate
 module.exports = mongoose.model('Campground', campgroundSchema);

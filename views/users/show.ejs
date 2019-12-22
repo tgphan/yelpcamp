@@ -20,6 +20,7 @@
                     <% if (currentUser && currentUser._id.equals(user._id)) { %>
                     <a href="/users/<%= user.username%>/edit">Edit profile</a>
                     <% } %>
+                    <a href="/users/follow/<%= user.username %>">Follow </a>
                 </div>
         </div>
     </div>
