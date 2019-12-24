@@ -5,6 +5,7 @@ const express = require('express'),
     User = require('../models/user'),
     Notification = require('../models/notifications'),
     middleware = require('../middleware');
+    
 
 // redirects to user page of current user or login page if username is specified
 router.get('/', (req, res) => {
@@ -156,6 +157,23 @@ router.get('/notifications/:id', middleware.isLoggedIn, async function (req, res
         req.flash('error', `We were unable to load your notifications.`);
         res.redirect(req.session.returnTo || `back`);
         delete req.session.returnTo;
+    }
+});
+
+router.post('/notifications/allread', middleware.isLoggedIn, async function(req, res) {
+    try {
+        let user = User.findOneAndUpdate({ 'username' : req.user.username })
+            .populate( 'notifications' )
+            .excec();
+
+            let notifications = user.notifications;
+
+            for (const notification of notifications) {
+                notification.isRead = true;
+            }
+
+    } catch (err) {
+
     }
 });
 
