@@ -19,13 +19,25 @@
                     </div>
                     <% if (currentUser && currentUser._id.equals(user._id)) { %>
                     <a href="/users/<%= user.username%>/edit">Edit profile</a>
+                    <% } else { %>
+                    <a href="/users/<%= user.username %>/follow">Follow </a>
                     <% } %>
-                    <a href="/users/follow/<%= user.username %>">Follow </a>
                 </div>
         </div>
     </div>
 </div>
 
+<div class="ui right aligned grid">
+    <div class="right floated three wide column">
+        <div class="ui segment">
+            <% for (const notification of user.notifications) { %>
+                <div class="meta">
+                    <%= notification.username %> - <%= notification.campground %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
 
 <div class="ui grid container">
         <div class="row">
