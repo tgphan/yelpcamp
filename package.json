@@ -20,7 +20,7 @@
     "locus": "^2.0.4",
     "lodash.template": "^4.5.0",
     "method-override": "^3.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "mongodb": "^3.4.1",
     "mongoose": "^5.8.2",
     "node-geocoder": "^3.25.0",
